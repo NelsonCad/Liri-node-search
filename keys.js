@@ -13,5 +13,5 @@ exports.omdb = {
 }
 
 exports.concerts = {
-    id: codingbootcamp
+    id: "codingbootcamp"
 }
