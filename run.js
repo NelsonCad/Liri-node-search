@@ -32,17 +32,18 @@ function concertSearch() {
     let search = process.argv.splice(3).join("%20");
 
     let queryURL = "https://rest.bandsintown.com/artists/" + search + "/events?app_id=" + concerts.id;
-    console.log(queryURL);
+    
     axios.get(
         queryURL
     ).then(function (response) {
 
-        response.forEach(concert) {
-            console.log("\n" + concert.datetime
-                + "\n" + concert.venue.name
-                + "\n" + concert.lineup
-                + "\n" + concert.url);
-        }
+        let concert = response.data;
+
+        for (i = 0; i <concert.length; i ++) {
+            console.log("\n" + concert[i].datetime
+            + "\n" + concert[i].venue.name + " in " + concert[i].venue.city + ", " + concert[i].venue.region
+            + "\n" + concert[i].lineup.join(", "));
+        };
 
     }).catch(function (err) {
         console.log(err);
