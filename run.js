@@ -11,38 +11,46 @@ const concerts = keys.concerts;
 
 
 function songSearch() {
-    let search = process.argv.splice(3).join("%20");
 
-    let queryURL = "https://api.spotify.com/v1/search?q=" + search + "&type=track,album,artist";
+    let tokenURL = "https://accounts.spotify.com/api/token"
 
-    axios.get({
-        url: queryURL,
-        headers: {
-            client_id: spotify.id,
-            client_secret: spotify.secret
+    let apiKeys = "Basic " + spotify.id + ":" + spotify.secret;
+    
+    axios.post(tokenURL,
+        headers = {
+            Authorization: apiKeys
         }
-    }).then(function (response) {
-        console.log(JSON.stringify(response, null, 2))
-    }).catch(function (err) {
-        console.log(err);
-    });
+    ).then(function (token) {
+        console.log(token);
+    })
+
+        // let search = process.argv.splice(3).join("%20");
+
+        // let queryURL = "https://api.spotify.com/v1/search?q=" + search + "&type=track,album,artist";
+        // axios.get(
+        //     queryURL
+        // ).then(function (response) {
+        //     console.log(JSON.stringify(response, null, 2))
+        .catch(function (err) {
+            console.log(err);
+        });
 };
 
 function concertSearch() {
     let search = process.argv.splice(3).join("%20");
 
     let queryURL = "https://rest.bandsintown.com/artists/" + search + "/events?app_id=" + concerts.id;
-    
+
     axios.get(
         queryURL
     ).then(function (response) {
 
         let concert = response.data;
 
-        for (i = 0; i <concert.length; i ++) {
+        for (i = 0; i < concert.length; i++) {
             console.log("\n" + concert[i].datetime
-            + "\n" + concert[i].venue.name + " in " + concert[i].venue.city + ", " + concert[i].venue.region
-            + "\n" + concert[i].lineup.join(", "));
+                + "\n" + concert[i].venue.name + " in " + concert[i].venue.city + ", " + concert[i].venue.region
+                + "\n" + concert[i].lineup.join(", "));
         };
 
     }).catch(function (err) {
