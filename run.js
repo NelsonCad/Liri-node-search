@@ -2,9 +2,13 @@
 require("dotenv").config();
 let axios = require("axios");
 const keys = require("./keys");
+let Spotify = require("node-spotify-api");
 
 // setting variaables for the key in this file
-const spotify = keys.spotify;
+const spotikeys = new Spotify({
+    id: keys.spotify.id,
+    secret: keys.spotify.secret
+});
 const omdb = keys.omdb;
 const concerts = keys.concerts;
 
@@ -12,28 +16,36 @@ const concerts = keys.concerts;
 
 function songSearch() {
 
-    let tokenURL = "https://accounts.spotify.com/api/token"
+    let search = process.argv.slice(3).join(" ");
 
-    let apiKeys = "Basic " + spotify.id + ":" + spotify.secret;
-    
-    axios.post(tokenURL,
-        headers = {
-            Authorization: apiKeys
-        }
-    ).then(function (token) {
-        console.log(token);
+    spotikeys.search({
+        type: "track",
+        query: search,
+        limit: 10
+    }).then(function (response) {
+        let results = response.tracks.items;
+
+        for (i = 0; i < results.length; i++) {
+            
+            console.log("\nName of song: " + results[i].name);
+
+            let creators = [];
+
+            for (a = 0; a < results[i].artists.length; a++) {
+                creators.push(results[i].artists[a].name);
+            }
+
+            console.log("\nBy " + creators.join(",  "));
+            console.log("\ngive it a listen with \n" + results[i].external_urls.spotify);
+
+            console.log("\n-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-_-\n");
+
+        };
+
+    }).catch(function (err) {
+        console.log(err);
     })
 
-        // let search = process.argv.splice(3).join("%20");
-
-        // let queryURL = "https://api.spotify.com/v1/search?q=" + search + "&type=track,album,artist";
-        // axios.get(
-        //     queryURL
-        // ).then(function (response) {
-        //     console.log(JSON.stringify(response, null, 2))
-        .catch(function (err) {
-            console.log(err);
-        });
 };
 
 function concertSearch() {
