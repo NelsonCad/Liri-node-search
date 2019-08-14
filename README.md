@@ -15,7 +15,7 @@ for all searches
 * spotify-this
 * search-song
 
-![correctly done spotify search image](images/spotifySearch.png "correctly done spotify search")
+![correctly done spotify search image](https://github.com/NelsonCad/Liri-node-search/blob/master/images/concertSearch.PNG "correctly done spotify search")
 
 ##### BandsinTown
 * concerts
