@@ -91,11 +91,12 @@ function movieSearch() {
     });
 }
 
+let keyword = process.argv[2]
 // switch statement to determine what to search
-switch (process.argv[2]) {
+switch (keyword.toLowerCase()) {
     case "spotify":
     case "spotify-this":
-    case "search-Song":
+    case "search-song":
         songSearch();
         break;
     case "concerts":
